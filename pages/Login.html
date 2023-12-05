@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../styles/login.css">
+</head>
+<body>
+    <div id="loginPage">
+        <h1>Login</h1>
+        <div>
+            <div>
+                <label for="userName">User Name</label>
+                <input type="text" id="userName" placeholder="Enter User Name" required>
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter Password" required>
+             </div>
+            <div>
+                <button id="logIn">Login</button>
+            </div>
+            <div id="showError" class="errorMsg">Missing Data</div>
+        </div>
+    </div>
+    <script type="module" src="../build/scripts/login.js"></script>
+</body>
+</html>
