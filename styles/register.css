@@ -1,0 +1,32 @@
+#container
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5%;
+    margin-left: auto;
+    margin-right: auto;
+    border: 3px solid blue;
+    width: fit-content;
+    padding: 1%;
+}
+#container input[type="text"] {
+    margin-bottom: 10px;
+    padding: 15px;
+    font-size: large;
+    color: blue;
+    margin-left: 15px;
+    margin-right: 15px;
+    border-radius: 15px;
+}
+.action-btn{
+    border-radius: 20px;
+    padding: 10px;
+    font-size: large;
+    background-color: rgb(177, 231, 177);
+    margin-left:10px;
+}
+h1{
+    color:navy;
+}

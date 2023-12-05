@@ -1,0 +1,65 @@
+#loginPage{
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 320px;
+    height: 350px;
+    border-radius: 25px;  
+    border: 3px solid #f1f1f1;
+    padding: 15px;
+    background-color: rgb(133, 164, 250);
+    /* background-color: rgb(235, 229, 219);*/
+}
+#loginPage input[type=text], input[type=password] {
+  font-size: 18px;
+  margin-bottom: 10px;
+  margin-top: 5px;
+  display: inline-block;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;  
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  color: blue;
+  font-size: large;
+  font-weight: bold;
+}
+
+#loginPage label{
+  font-size: 22px;
+  color:rgb(0, 0, 240);
+}
+
+#loginPage button{
+  font-size: larger;
+  width: 100px;
+  border-radius: 25px;
+  padding: 10px;
+  margin-left: 60px;
+  /*background-color: rgb(187, 200, 44);*/
+  background-color: #04AA6D;
+  color: white;
+  border:none;
+  cursor: pointer;
+  width:60%;
+}
+
+.login-input{
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Add a hover effect for buttons */
+#loginPage button:hover{
+  opacity: 0.8;
+}
+
+.errorMsg{
+  color:red;
+  font-weight: 600;
+  margin-left: 70px;
+  margin-top:5px
+}
