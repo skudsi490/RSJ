@@ -18,10 +18,9 @@ const initUsers = async (): Promise<void> => {
 }
 
 // Fetch user data from users.json
-// Fetch user data from users.json
 const fetchUserData = async (): Promise<string> => {
     try {
-        const response = await fetch("../../build/data/users.json"); // Corrected path
+        const response = await fetch("../../build/data/users.json"); 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }

@@ -21,10 +21,9 @@ const initUsers = () => __awaiter(void 0, void 0, void 0, function* () {
     userList = JSON.parse(userData).users;
 });
 // Fetch user data from users.json
-// Fetch user data from users.json
 const fetchUserData = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const response = yield fetch("../../build/data/users.json"); // Corrected path
+        const response = yield fetch("../../build/data/users.json");
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
