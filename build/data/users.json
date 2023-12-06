@@ -1,52 +1,100 @@
 {
-    "users":[
+    "users": [
         {
-            "fname":"Morya",
-            "lname":"Menachem",
-            "id":1,
-            "address":{
-                "city":"Shafir",
-                "country":"Israel"
+            "fname": "Morya",
+            "lname": "Menachem",
+            "id": 1,
+            "address": {
+                "city": "Shafir",
+                "country": "Israel"
             },
-            "age":20,
-            "username":"mm276",
-            "password":123456
+            "age": 20,
+            "username": "mm276",
+            "password": "123456"
         },
         {
-            "fname":"Dvir",
-            "lname":"Menachem",
-            "id":2,
-            "address":{
-                "city":"Shafir",
-                "country":"Israel"
+            "fname": "Dvir",
+            "lname": "Menachem",
+            "id": 2,
+            "address": {
+                "city": "Shafir",
+                "country": "Israel"
             },
-            "age":17,
-            "username":"dm276",
-            "password":123456
+            "age": 17,
+            "username": "dm276",
+            "password": "123456"
         },
         {
-            "fname":"Yahav",
-            "lname":"Menachem",
-            "id":3,
-            "address":{
-                "city":"Shafir",
-                "country":"Israel"
+            "fname": "Yahav",
+            "lname": "Menachem",
+            "id": 3,
+            "address": {
+                "city": "Shafir",
+                "country": "Israel"
             },
-            "age":12,
-            "username":"my276",
-            "password":123456
+            "age": 12,
+            "username": "my276",
+            "password": "123456"
         },
         {
-            "fname":"Noya",
-            "lname":"Menachem",
-            "id":4,
-            "address":{
-                "city":"Shafir",
-                "country":"Israel"
+            "fname": "Noya",
+            "lname": "Menachem",
+            "id": 4,
+            "address": {
+                "city": "Shafir",
+                "country": "Israel"
             },
-            "age":9,
-            "username":"nm276",
-            "password":123456
+            "age": 9,
+            "username": "nm276",
+            "password": "123456"
+        },
+        {
+            "fname": "John",
+            "lname": "Doe",
+            "id": 5,
+            "address": {
+                "city": "New York",
+                "country": "USA"
+            },
+            "age": 25,
+            "username": "johndoe",
+            "password": "password123"
+        },
+        {
+            "fname": "Jane",
+            "lname": "Doe",
+            "id": 6,
+            "address": {
+                "city": "Los Angeles",
+                "country": "USA"
+            },
+            "age": 22,
+            "username": "janedoe",
+            "password": "securepwd"
+        },
+        {
+            "fname": "Alice",
+            "lname": "Johnson",
+            "id": 7,
+            "address": {
+                "city": "London",
+                "country": "UK"
+            },
+            "age": 28,
+            "username": "alicej",
+            "password": "alice123"
+        },
+        {
+            "fname": "Bob",
+            "lname": "Smith",
+            "id": 8,
+            "address": {
+                "city": "Sydney",
+                "country": "Australia"
+            },
+            "age": 32,
+            "username": "bobsmith",
+            "password": "bobby2023"
         }
     ]
 }

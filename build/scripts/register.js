@@ -1,61 +1,46 @@
-var _a, _b;
+// register.ts
 import User from "./utils/classes.js";
 let userArr = [];
 // Function to initialize user data from a local JSON file
 const initData = () => {
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", "../../build/data/users.json", true);
-    xhr.onload = function () {
-        if (this.status === 200) {
-            const response = JSON.parse(this.responseText).users;
-            userArr = response;
-            localStorage.setItem("userData", JSON.stringify(response));
+    xhr.open("GET", "../build/data/users.json", true);
+    xhr.onload = () => {
+        if (xhr.status === 200) {
+            const data = JSON.parse(xhr.responseText).users;
+            userArr = data.map((u) => new User(u.id, u.fname, u.lname, u.address.city, u.address.country, u.age, u.username, u.password));
+            localStorage.setItem("userData", JSON.stringify(userArr));
         }
         else {
-            console.error("Failed to load user data: ", this.status, this.statusText);
+            console.error("Failed to load user data:", xhr.status, xhr.statusText);
         }
     };
-    xhr.onerror = function () {
-        console.error("Network error occurred while fetching user data.");
-    };
+    xhr.onerror = () => console.error("Network error occurred while fetching user data.");
     xhr.send();
 };
-initData();
 // Registration handler
 const rgst_handler = () => {
-    const fname = document.getElementById("fname");
-    const lname = document.getElementById("lname");
-    const city = document.getElementById("city");
-    const country = document.getElementById("country");
-    const age = document.getElementById("age");
-    const username = document.getElementById("username");
-    const password = document.getElementById("password");
-    if (fname.value === "" || lname.value === "" || city.value === "" || country.value === "" ||
-        age.value === "" || username.value === "" || password.value === "") {
+    const fname = document.getElementById("fname").value;
+    const lname = document.getElementById("lname").value;
+    const city = document.getElementById("city").value;
+    const country = document.getElementById("country").value;
+    const age = document.getElementById("age").value;
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    if (!fname || !lname || !city || !country || !age || !username || !password) {
         alert("Missing data, Please Fill All Fields!");
+        return;
     }
-    else {
-        // Generate a new user ID
-        const nextId = userArr.length > 0 ? Math.max(...userArr.map(u => u.id)) + 1 : 1;
-        let user = new User(nextId, fname.value, lname.value, city.value, country.value, Number(age.value), username.value, password.value);
-        userArr.push(user);
-        localStorage.setItem("userData", JSON.stringify(userArr));
-        // Clear form fields after registration
-        fname.value = "";
-        lname.value = "";
-        city.value = "";
-        country.value = "";
-        age.value = "";
-        username.value = "";
-        password.value = "";
-        console.log("User registered:", user);
-    }
+    const nextId = userArr.length > 0 ? Math.max(...userArr.map(u => u.id)) + 1 : 1;
+    const newUser = new User(nextId, fname, lname, city, country, Number(age), username, password);
+    userArr.push(newUser);
+    localStorage.setItem("userData", JSON.stringify(userArr));
+    console.log("User registered:", newUser);
+    window.location.href = "../../pages/Login.html"; // Redirect to login page after registration
 };
-// Handler for redirecting to the login page
-const login_handler = () => {
-    setTimeout(() => {
-        window.location.href = "../../pages/Login.html";
-    }, 3000);
-};
-(_a = document.getElementById("rgst")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", rgst_handler);
-(_b = document.getElementById("Login")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", login_handler);
+document.addEventListener('DOMContentLoaded', () => {
+    var _a, _b;
+    (_a = document.getElementById("rgst")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", rgst_handler);
+    (_b = document.getElementById("Login")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", () => window.location.href = "../../pages/Login.html");
+    initData();
+});

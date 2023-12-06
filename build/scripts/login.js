@@ -1,60 +1,72 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var _a;
 let userList = [];
 const errMsg = document.getElementById("showError");
 errMsg.style.display = 'none';
 // Function to initialize user data
-const initUsers = () => __awaiter(void 0, void 0, void 0, function* () {
-    let userData = localStorage.getItem("userData");
-    if (!userData) {
-        userData = yield fetchUserData();
-        localStorage.setItem("userData", userData);
-    }
-    userList = JSON.parse(userData).users;
-});
-// Fetch user data from users.json
-const fetchUserData = () => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const response = yield fetch("../../build/data/users.json");
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+const initUsers = () => {
+    const userDataString = localStorage.getItem("userData");
+    if (userDataString) {
+        console.log("Loading data from localStorage");
+        const userData = JSON.parse(userDataString);
+        if (Array.isArray(userData)) {
+            userList = userData;
         }
-        return yield response.text();
+        else {
+            console.error("Invalid data format in localStorage");
+            fetchUserDataUsingXHR(); // Attempt to fetch if local data is invalid
+        }
     }
-    catch (error) {
-        console.error("Failed to load user data:", error);
-        return JSON.stringify({ users: [] });
+    else {
+        console.log("Fetching data using XMLHttpRequest");
+        fetchUserDataUsingXHR();
     }
-});
-initUsers();
+};
+// Fetch user data using XMLHttpRequest
+const fetchUserDataUsingXHR = () => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", "../build/data/users.json", true);
+    xhr.onload = () => {
+        if (xhr.status === 200) {
+            const data = JSON.parse(xhr.responseText);
+            if (Array.isArray(data.users)) {
+                userList = data.users;
+                localStorage.setItem("userData", JSON.stringify(userList));
+            }
+            else {
+                console.error("Invalid data format in JSON file");
+            }
+        }
+        else {
+            console.error("Failed to load user data:", xhr.status, xhr.statusText);
+        }
+    };
+    xhr.onerror = () => {
+        console.error("Network error occurred while fetching user data.");
+    };
+    xhr.send();
+};
 // Login handler function
 const login_handler = () => {
-    const userName = document.getElementById("userName");
-    const password = document.getElementById("password");
-    if (userName.value === "" || password.value === "") {
+    const userName = document.getElementById("userName").value;
+    const password = document.getElementById("password").value;
+    if (!userName || !password) {
         errMsg.textContent = 'Missing Data';
         errMsg.style.display = 'block';
         return;
     }
-    const currentUser = userList.find(user => user.username === userName.value && user.password === password.value);
+    const currentUser = userList.find(user => user.username === userName && user.password === password);
     if (currentUser) {
         localStorage.setItem("currentUserData", JSON.stringify(currentUser));
-        setTimeout(() => {
-            window.location.href = "../pages/home.html";
-        }, 3000);
+        localStorage.setItem("currentUserFullName", `${currentUser.fname} ${currentUser.lname}`);
+        setTimeout(() => window.location.href = "../pages/home.html", 3000);
     }
     else {
         errMsg.textContent = 'User not exist';
         errMsg.style.display = 'block';
     }
 };
-(_a = document.getElementById("logIn")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", login_handler);
+document.addEventListener('DOMContentLoaded', () => {
+    var _a;
+    (_a = document.getElementById("logIn")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", login_handler);
+    initUsers();
+});
 export {};

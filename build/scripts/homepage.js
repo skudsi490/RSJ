@@ -1,5 +1,16 @@
 "use strict";
 document.addEventListener('DOMContentLoaded', () => {
+    const currentUserDataString = localStorage.getItem('currentUserData');
+    let userName = 'Guest';
+    if (currentUserDataString) {
+        const currentUserData = JSON.parse(currentUserDataString);
+        const { fname, lname } = currentUserData;
+        userName = `${fname} ${lname}`;
+    }
+    const welcomeMessage = document.createElement('p');
+    welcomeMessage.className = 'welcome-message';
+    welcomeMessage.textContent = `Welcome back ${userName}. What would you like to watch today?`;
+    document.body.insertBefore(welcomeMessage, document.body.firstChild);
     fetchCategoryMovies('trending', 'trending/movie/day');
     fetchCategoryMovies('top-rated', 'movie/top_rated');
     fetchCategoryMovies('popular-series', 'tv/popular');

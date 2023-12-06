@@ -1,68 +1,52 @@
-import User from "./utils/classes.js"
+// register.ts
+import User from "./utils/classes.js";
 
 let userArr: User[] = [];
 
 // Function to initialize user data from a local JSON file
 const initData = (): void => {
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", "../../build/data/users.json", true);
-    xhr.onload = function() {
-        if (this.status === 200) {
-            const response = JSON.parse(this.responseText).users;
-            userArr = response;
-            localStorage.setItem("userData", JSON.stringify(response));
+    xhr.open("GET", "../build/data/users.json", true); 
+
+    xhr.onload = () => {
+        if (xhr.status === 200) {
+            const data = JSON.parse(xhr.responseText).users;
+            userArr = data.map((u: any) => new User(u.id, u.fname, u.lname, u.address.city, u.address.country, u.age, u.username, u.password));
+            localStorage.setItem("userData", JSON.stringify(userArr));
         } else {
-            console.error("Failed to load user data: ", this.status, this.statusText);
+            console.error("Failed to load user data:", xhr.status, xhr.statusText);
         }
     };
-    xhr.onerror = function() {
-        console.error("Network error occurred while fetching user data.");
-    };
+    xhr.onerror = () => console.error("Network error occurred while fetching user data.");
     xhr.send();
-}
-
-initData();
+};
 
 // Registration handler
 const rgst_handler = (): void => {
-    const fname = document.getElementById("fname") as HTMLInputElement;
-    const lname = document.getElementById("lname") as HTMLInputElement;
-    const city = document.getElementById("city") as HTMLInputElement;
-    const country = document.getElementById("country") as HTMLInputElement;
-    const age = document.getElementById("age") as HTMLInputElement;
-    const username = document.getElementById("username") as HTMLInputElement;
-    const password = document.getElementById("password") as HTMLInputElement;
+    const fname = (document.getElementById("fname") as HTMLInputElement).value;
+    const lname = (document.getElementById("lname") as HTMLInputElement).value;
+    const city = (document.getElementById("city") as HTMLInputElement).value;
+    const country = (document.getElementById("country") as HTMLInputElement).value;
+    const age = (document.getElementById("age") as HTMLInputElement).value;
+    const username = (document.getElementById("username") as HTMLInputElement).value;
+    const password = (document.getElementById("password") as HTMLInputElement).value;
 
-    if (fname.value === "" || lname.value === "" || city.value === "" || country.value === "" || 
-        age.value === "" || username.value === "" || password.value === "") {
+    if (!fname || !lname || !city || !country || !age || !username || !password) {
         alert("Missing data, Please Fill All Fields!");
-    } else {
-        // Generate a new user ID
-        const nextId = userArr.length > 0 ? Math.max(...userArr.map(u => u.id)) + 1 : 1;
-        let user = new User(nextId, fname.value, lname.value, city.value, country.value, Number(age.value), username.value, password.value);
-        
-        userArr.push(user);
-        localStorage.setItem("userData", JSON.stringify(userArr));
-
-        // Clear form fields after registration
-        fname.value = "";
-        lname.value = "";
-        city.value = "";
-        country.value = "";
-        age.value = "";
-        username.value = "";
-        password.value = "";
-
-        console.log("User registered:", user);
+        return;
     }
-}
 
-// Handler for redirecting to the login page
-const login_handler = (): void => {
-    setTimeout(() => {
-        window.location.href = "../../pages/Login.html";
-    }, 3000);
-}
+    const nextId = userArr.length > 0 ? Math.max(...userArr.map(u => u.id)) + 1 : 1;
+    const newUser = new User(nextId, fname, lname, city, country, Number(age), username, password);
+    userArr.push(newUser);
+    localStorage.setItem("userData", JSON.stringify(userArr));
+    
+    console.log("User registered:", newUser);
+    window.location.href = "../../pages/Login.html"; // Redirect to login page after registration
+};
 
-document.getElementById("rgst")?.addEventListener("click", rgst_handler);
-document.getElementById("Login")?.addEventListener("click", login_handler);
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById("rgst")?.addEventListener("click", rgst_handler);
+    document.getElementById("Login")?.addEventListener("click", () => window.location.href = "../../pages/Login.html");
+    initData();
+});
