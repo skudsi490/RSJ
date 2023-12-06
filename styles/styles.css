@@ -1,0 +1,146 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #141414;
+    color: white;
+}
+
+header {
+    background-color: #181818;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-links li {
+    display: inline;
+    margin-left: 20px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1em;
+}
+
+.logo {
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+.featured {
+    text-align: center;
+    padding: 50px 10px;
+}
+
+.content-row {
+    margin: 20px 0;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 20px 5px;
+}
+
+.movie-card {
+    display: inline-block;
+    vertical-align: top;
+    background-color: #202020;
+    border: none;
+    margin-right: 10px;
+    padding: 15px;
+    border-radius: 8px;
+    width: 200px; /* Adjust based on screen size */
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+}
+
+.movie-card img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.movie-card h3 {
+    margin: 0;
+    font-size: 1em;
+    color: #fff;
+}
+
+.content-row::-webkit-scrollbar {
+    display: none;
+}
+
+.content-row {
+    -ms-overflow-style: none;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #181818;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav-links li {
+        display: block;
+        margin: 10px 0;
+    }
+
+    .content-row {
+        padding: 20px 0;
+    }
+
+    .movie-card {
+        width: 150px;
+    }
+
+    .movie-card img {
+        height: 225px; /* Adjust height proportionally */
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-links li,
+    .nav-links a {
+        font-size: 0.9em;
+    }
+
+    .logo {
+        font-size: 1.2em;
+    }
+
+    .movie-card {
+        width: 120px;
+    }
+
+    .movie-card img {
+        height: 180px; /* Adjust height proportionally */
+    }
+}
+
+/* Button Styles */
+button {
+    background-color: #e50914; /* Netflix red */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #f40612; /* A slightly darker shade for hover effect */
+}

@@ -3,11 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Mock Netflix Homepage</title>
+    <link rel="stylesheet" href="../styles/styles.css">
 </head>
 <body>
-    <div class="test">
-        <h1>Tasks</h1>
-    </div>
+    <header>
+        <nav>
+            <div class="logo">Netflix</div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Series</a></li>
+                <li><a href="#">Movies</a></li>
+                <li><a href="#">New & Popular</a></li>
+                <li><a href="./myList.html">My List</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="content-row">
+            <h2>Trending Now</h2>
+            <div id="trending" class="movies"></div>
+        </section>
+        <section class="content-row">
+            <h2>Top Rated Movies</h2>
+            <div id="top-rated" class="movies"></div>
+        </section>
+        <section class="content-row">
+            <h2>Popular Series</h2>
+            <div id="popular-series" class="movies"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Netflix, Inc.</p>
+    </footer>
+
+    <script src="../build/scripts/homepage.js"></script>
 </body>
 </html>
