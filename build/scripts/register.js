@@ -1,7 +1,5 @@
-// register.ts
 import User from "./utils/classes.js";
 let userArr = [];
-// Function to initialize user data from a local JSON file
 const initData = () => {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", "../build/data/users.json", true);
@@ -36,7 +34,7 @@ const rgst_handler = () => {
     userArr.push(newUser);
     localStorage.setItem("userData", JSON.stringify(userArr));
     console.log("User registered:", newUser);
-    window.location.href = "../../pages/Login.html"; // Redirect to login page after registration
+    window.location.href = "../../pages/Login.html";
 };
 document.addEventListener('DOMContentLoaded', () => {
     var _a, _b;

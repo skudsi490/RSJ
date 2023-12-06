@@ -27,7 +27,7 @@ function displayFavorites() {
 }
 function removeFromFavorites(index) {
     let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-    favorites.splice(index, 1); // Removes the movie at the specified index
+    favorites.splice(index, 1);
     localStorage.setItem('favorites', JSON.stringify(favorites));
-    displayFavorites(); // Refresh the display
+    displayFavorites();
 }

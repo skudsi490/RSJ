@@ -11,7 +11,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const welcomeMessage = document.createElement('p');
     welcomeMessage.className = 'welcome-message';
     welcomeMessage.textContent = `Welcome back ${userName}. What would you like to watch today?`;
-    document.body.insertBefore(welcomeMessage, document.body.firstChild);
+
+    const headerElement = document.querySelector('header');
+    if (headerElement) {
+        headerElement.insertAdjacentElement('afterend', welcomeMessage);
+    }
+
+      
+        const logoutButton = document.getElementById('logoutButton');
+        if (logoutButton) {
+            logoutButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                logoutUser();
+            });
+        }
+
+        function logoutUser(): void {
+            localStorage.removeItem('currentUserData');
+            window.location.href = '/pages/Login.html'; 
+        }
 
     fetchCategoryMovies('trending', 'trending/movie/day');
     fetchCategoryMovies('top-rated', 'movie/top_rated');
@@ -37,6 +55,7 @@ function fetchCategoryMovies(containerId: string, endpoint: string): void {
     };
     xhr.send();
 }
+
 
 function displayMovies(containerId: string, movies: any[]): void {
     const moviesContainer: HTMLElement | null = document.getElementById(containerId);

@@ -4,7 +4,7 @@ let userList: User[] = [];
 const errMsg = document.getElementById("showError") as HTMLDivElement;
 errMsg.style.display = 'none';
 
-// Function to initialize user data
+
 const initUsers = (): void => {
     const userDataString = localStorage.getItem("userData");
     if (userDataString) {
@@ -14,7 +14,7 @@ const initUsers = (): void => {
             userList = userData;
         } else {
             console.error("Invalid data format in localStorage");
-            fetchUserDataUsingXHR(); // Attempt to fetch if local data is invalid
+            fetchUserDataUsingXHR(); 
         }
     } else {
         console.log("Fetching data using XMLHttpRequest");
@@ -22,7 +22,7 @@ const initUsers = (): void => {
     }
 };
 
-// Fetch user data using XMLHttpRequest
+
 const fetchUserDataUsingXHR = (): void => {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", "../build/data/users.json", true); 
@@ -48,7 +48,7 @@ const fetchUserDataUsingXHR = (): void => {
     xhr.send();
 };
 
-// Login handler function
+
 const login_handler = (): void => {
     const userName = (document.getElementById("userName") as HTMLInputElement).value;
     const password = (document.getElementById("password") as HTMLInputElement).value;
