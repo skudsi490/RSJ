@@ -1,4 +1,3 @@
-// Define the DonutProvider interface
 interface DonutProvider {
     id: number;
     name: string;
@@ -7,13 +6,15 @@ interface DonutProvider {
     location: string;
     priceRange: string;
     image: string;
+    gender: string;
 }
+
+let allProviders: DonutProvider[] = [];
 
 function initializeSlider() {
     let currentSlideIndex = 0;
     const slides = document.querySelectorAll('.slider-content');
     const totalSlides = slides.length;
-
 
     function goToSlide(slideIndex: number) {
         slides.forEach((slide, index) => {
@@ -22,38 +23,29 @@ function initializeSlider() {
         currentSlideIndex = slideIndex;
     }
 
-
     function nextSlide() {
         let nextSlideIndex = (currentSlideIndex + 1) % totalSlides;
         goToSlide(nextSlideIndex);
     }
 
-    setInterval(nextSlide, 3000); // Change slide every 3 seconds
+    setInterval(nextSlide, 3000);
 }
 
-
 function fetchDonutProviders() {
-    const apiUrl = 'https://randomuser.me/api/?results=10';
-
+    const apiUrl = 'https://randomuser.me/api/?results=50';
     const xhr = new XMLHttpRequest();
     xhr.open('GET', apiUrl, true);
 
     xhr.onload = function () {
         if (xhr.status === 200) {
-            try {
-                const data: any = JSON.parse(xhr.responseText);
+            const data = JSON.parse(xhr.responseText);
 
-                Promise.all([fetchDonutFilters(), fetchDonutSpecialties()]).then(values => {
-                    const [filters, specialties] = values;
-                    console.log('Filters:', filters); 
-                    console.log('Specialties:', specialties); 
-
-                    const donutProviders = parseApiResponse(data, filters, specialties);
-                    displayDonutProviders(donutProviders);
-                });
-            } catch (error) {
-                console.error('Error parsing data:', error);
-            }
+            Promise.all([fetchDonutFilters(), fetchDonutSpecialties()]).then(values => {
+                const [filters, specialties] = values;
+                displayFilterOptions(filters, specialties); // Populate filter sections
+                allProviders = parseApiResponse(data, filters, specialties);
+                displayDonutProviders(allProviders);
+            });
         } else {
             console.error('HTTP Error:', xhr.status, xhr.statusText);
         }
@@ -67,7 +59,7 @@ function fetchDonutProviders() {
 }
 
 function parseApiResponse(apiResponse: any, filters: string[], specialties: string[]): DonutProvider[] {
-    const results: any[] = apiResponse.results;
+    const results = apiResponse.results;
     return results.map((result: any, index: number) => {
         const randomFilter = filters[Math.floor(Math.random() * filters.length)];
         const randomSpecialty = specialties[Math.floor(Math.random() * specialties.length)];
@@ -80,6 +72,7 @@ function parseApiResponse(apiResponse: any, filters: string[], specialties: stri
             location: `${result.location.city}, ${result.location.country}`,
             priceRange: '$$$',
             image: result.picture.large,
+            gender: result.gender
         };
     });
 }
@@ -128,7 +121,6 @@ function displayDonutProviders(data: DonutProvider[]) {
     });
 }
 
-
 function createDonutProviderCard(provider: DonutProvider): HTMLElement {
     const card = document.createElement('div');
     card.className = 'product-card';
@@ -146,20 +138,104 @@ function createDonutProviderCard(provider: DonutProvider): HTMLElement {
     const addToCartButton = card.querySelector('.add-to-cart-button');
     if (addToCartButton) {
         addToCartButton.addEventListener('click', () => {
-            const providerId = addToCartButton.getAttribute('data-provider-id');
-            if (providerId) {
-                addToCart(parseInt(providerId));
-            }
+            addToCart(provider.id); 
         });
     }
 
     return card;
 }
 
+
 function addToCart(providerId: number) {
     console.log(`Adding provider with ID ${providerId} to cart.`);
 }
 
-
-fetchDonutProviders()
+fetchDonutProviders();
 initializeSlider();
+
+
+document.getElementById('apply-filters')?.addEventListener('click', () => {
+    const selectedCategories = getSelectedFilters('category-filters');
+    const selectedSpecialties = getSelectedFilters('specialty-filters');
+    const selectedGenders = getSelectedFilters('gender-filters');
+
+    applyFilters({
+        categories: selectedCategories,
+        specialties: selectedSpecialties,
+        genders: selectedGenders,
+    });
+});
+
+function getSelectedFilters(filterContainerId: string): string[] {
+    const selectedFilters: string[] = [];
+    const filterContainer = document.getElementById(filterContainerId);
+
+    if (filterContainer) {
+        const checkboxes = filterContainer.querySelectorAll('input[type="checkbox"]:checked');
+
+        checkboxes.forEach(checkbox => {
+            const inputElement = checkbox as HTMLInputElement; // Type casting
+            selectedFilters.push(inputElement.value);
+        });
+    }
+
+    return selectedFilters;
+}
+
+function applyFilters(selectedFilters: any) {
+    const filteredProviders = allProviders.filter(provider => {
+        return (
+            (selectedFilters.categories.length === 0 || selectedFilters.categories.includes(provider.category)) &&
+            (selectedFilters.specialties.length === 0 || selectedFilters.specialties.includes(provider.specialty)) &&
+            (selectedFilters.genders.length === 0 || selectedFilters.genders.includes(provider.gender)) 
+                    );
+    });
+
+    displayDonutProviders(filteredProviders);
+}
+
+// New function to extract unique values from the API data
+function extractUniqueValues(dataArray: any[], key: string): string[] {
+    const uniqueValues = new Set<string>();
+    dataArray.forEach(item => {
+        if (item[key]) {
+            uniqueValues.add(item[key].toString());
+        }
+    });
+    return Array.from(uniqueValues).sort();
+}
+
+function displayFilterOptions(filters: string[], specialties: string[]) {
+    populateFilterSection('category-filters', filters, 'category');
+    populateFilterSection('specialty-filters', specialties, 'specialty');
+    populateFilterSection('gender-filters', ['male', 'female'], 'gender');
+}
+
+function populateFilterSection(containerId: string, options: string[], groupName: string) {
+    const container = document.getElementById(containerId);
+    if (!container) {
+        console.error(`Container not found: ${containerId}`);
+        return;
+    }
+
+    options.forEach(option => {
+        const checkbox = createCheckbox(option, groupName);
+        container.appendChild(checkbox);
+    });
+}
+
+
+function createCheckbox(labelText: string, groupName: string): HTMLElement {
+    const container = document.createElement('div');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.value = labelText;
+    checkbox.name = groupName;
+    const label = document.createElement('label');
+    label.textContent = labelText;
+
+    container.appendChild(checkbox);
+    container.appendChild(label);
+
+    return container;
+}
