@@ -9,6 +9,29 @@ interface DonutProvider {
     image: string;
 }
 
+function initializeSlider() {
+    let currentSlideIndex = 0;
+    const slides = document.querySelectorAll('.slider-content');
+    const totalSlides = slides.length;
+
+
+    function goToSlide(slideIndex: number) {
+        slides.forEach((slide, index) => {
+            slide.classList.toggle('active', index === slideIndex);
+        });
+        currentSlideIndex = slideIndex;
+    }
+
+
+    function nextSlide() {
+        let nextSlideIndex = (currentSlideIndex + 1) % totalSlides;
+        goToSlide(nextSlideIndex);
+    }
+
+    setInterval(nextSlide, 3000); // Change slide every 3 seconds
+}
+
+
 function fetchDonutProviders() {
     const apiUrl = 'https://randomuser.me/api/?results=10';
 
@@ -139,3 +162,4 @@ function addToCart(providerId: number) {
 
 
 fetchDonutProviders()
+initializeSlider();
