@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color:white;
+    background-color:lightgray;
     color: white;
     display: flex;
     flex-direction:row; 
@@ -32,6 +32,7 @@ body {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
+    font-weight: bolder;
     border: 1px solid #333; 
     background-color: #202020; 
     color: #fff; 
@@ -66,7 +67,6 @@ body {
     border: 1px solid #333;
     background-color:rgb(193, 31, 117);
     /* color: #fff; */
-    color:goldenrod;
     border-radius: 4px;
     box-sizing: border-box; 
 }
