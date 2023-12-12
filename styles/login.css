@@ -1,6 +1,6 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #141414;
+  background-color: #ffffff;
   color: white;
   display: flex;
   flex-direction: column; 
@@ -13,7 +13,7 @@ body {
 #loginPage {
   width: 300px;
   padding: 20px;
-  background-color: #ff6600;
+  background-color: #ff00ee;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); 
 }
@@ -39,8 +39,8 @@ input[type="text"],
 input[type="password"] {
   width: 100%;
   padding: 10px;
-  border: 1px solid #333; 
-  background-color: #202020; 
+  border: 1px solid #202020; 
+  background-color: rgb(224, 123, 187); 
   color: #fff; 
   border-radius: 4px;
   margin-bottom: 10px;
@@ -49,7 +49,7 @@ input[type="password"] {
 button#logIn {
   width: calc(100% - 20px); 
   padding: 10px;
-  background-color: #e509c8;
+  background-color:  goldenrod;
   color: white;
   border: none;
   border-radius: 4px;
@@ -61,7 +61,7 @@ button#logIn {
 }
 
 button#logIn:hover {
-  background-color: #f40612;
+  background-color: rgb(193, 31, 117);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); 
 }
 
@@ -79,11 +79,20 @@ button#logIn:hover {
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #333;
-    background-color: #202020;
+    background-color: #rgb(193, 31, 117);;
     color: #fff;
     border-radius: 4px;
     box-sizing: border-box; 
 }
+
+/* styles/login.css */
+
+#logoContainer img {
+  max-width: 100px; /* קטן את התמונה לרוחב מרבי של 150 פיקסלים */
+  height: auto; /* שמירה על יחסי גובה */
+
+}
+
 
 
 
