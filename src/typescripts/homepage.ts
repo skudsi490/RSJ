@@ -9,10 +9,6 @@ interface DonutProvider {
     image: string;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    fetchDonutProviders();
-});
-
 function fetchDonutProviders() {
     const apiUrl = 'https://randomuser.me/api/?results=10';
 
@@ -65,28 +61,36 @@ function parseApiResponse(apiResponse: any, filters: string[], specialties: stri
     });
 }
 
-async function fetchDonutFilters(): Promise<string[]> {
-    const filtersFilePath = '../../build/data/donut-filters.json';
-    try {
-        const response = await fetch(filtersFilePath);
-        const data = await response.json();
-        return data.filters;
-    } catch (error) {
-        console.error('Error:', error);
-        return [];
-    }
+function fetchDonutFilters(): Promise<string[]> {
+    return new Promise((resolve) => {
+        const xhr = new XMLHttpRequest();
+        const filtersFilePath = '../../build/data/donut-filters.json';
+
+        xhr.open('GET', filtersFilePath, true);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                const data = JSON.parse(xhr.responseText);
+                resolve(data.filters);
+            }
+        };
+        xhr.send();
+    });
 }
 
-async function fetchDonutSpecialties(): Promise<string[]> {
-    const specialtiesFilePath = '../../build/data/donut-specialties.json';
-    try {
-        const response = await fetch(specialtiesFilePath);
-        const data = await response.json();
-        return data.specialties;
-    } catch (error) {
-        console.error('Error:', error);
-        return [];
-    }
+function fetchDonutSpecialties(): Promise<string[]> {
+    return new Promise((resolve) => {
+        const xhr = new XMLHttpRequest();
+        const specialtiesFilePath = '../../build/data/donut-specialties.json';
+
+        xhr.open('GET', specialtiesFilePath, true);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                const data = JSON.parse(xhr.responseText);
+                resolve(data.specialties);
+            }
+        };
+        xhr.send();
+    });
 }
 
 function displayDonutProviders(data: DonutProvider[]) {
@@ -133,3 +137,5 @@ function addToCart(providerId: number) {
     console.log(`Adding provider with ID ${providerId} to cart.`);
 }
 
+
+fetchDonutProviders()
