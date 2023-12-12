@@ -1,96 +1,146 @@
+// Define the DonutProvider interface
+interface DonutProvider {
+    id: number;
+    name: string;
+    category: string;
+    specialty: string;
+    location: string;
+    priceRange: string;
+    image: string;
+}
+
+// This function is called when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-    const currentUserDataString = localStorage.getItem('currentUserData');
-    let userName = 'Guest';
-
-    if (currentUserDataString) {
-        const currentUserData = JSON.parse(currentUserDataString);
-        const { fname, lname } = currentUserData;
-        userName = `${fname} ${lname}`;
-    }
-
-    const welcomeMessage = document.createElement('p');
-    welcomeMessage.className = 'welcome-message';
-    welcomeMessage.textContent = `Welcome back ${userName}. What would you like to watch today?`;
-
-    const headerElement = document.querySelector('header');
-    if (headerElement) {
-        headerElement.insertAdjacentElement('afterend', welcomeMessage);
-    }
-
-      
-        const logoutButton = document.getElementById('logoutButton');
-        if (logoutButton) {
-            logoutButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                logoutUser();
-            });
-        }
-
-        function logoutUser(): void {
-            localStorage.removeItem('currentUserData');
-            window.location.href = '/pages/Login.html'; 
-        }
-
-    fetchCategoryMovies('trending', 'trending/movie/day');
-    fetchCategoryMovies('top-rated', 'movie/top_rated');
-    fetchCategoryMovies('popular-series', 'tv/popular');
+    // Fetch data from the custom API endpoint
+    fetchDonutProviders();
 });
 
-function fetchCategoryMovies(containerId: string, endpoint: string): void {
-    const apiKey: string = '617e353f14d2859c113fd73123a1765b';
-    const url: string = `https://api.themoviedb.org/3/${endpoint}?api_key=${apiKey}&language=en-US&page=1`;
+// Fetches donut providers using AJAX
+function fetchDonutProviders() {
+    const apiUrl = 'https://randomuser.me/api/?results=10';
 
-    const xhr: XMLHttpRequest = new XMLHttpRequest();
-    xhr.open('GET', url);
-    xhr.onload = () => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', apiUrl, true);
+
+    xhr.onload = function () {
         if (xhr.status === 200) {
-            const data: any = JSON.parse(xhr.responseText);
-            displayMovies(containerId, data.results);
+            try {
+                const data: any = JSON.parse(xhr.responseText);
+
+                Promise.all([fetchDonutFilters(), fetchDonutSpecialties()]).then(values => {
+                    const [filters, specialties] = values;
+                    console.log('Filters:', filters); 
+                    console.log('Specialties:', specialties); 
+
+                    const donutProviders = parseApiResponse(data, filters, specialties);
+                    displayDonutProviders(donutProviders);
+                });
+            } catch (error) {
+                console.error('Error parsing data:', error);
+            }
         } else {
-            console.error('Error:', xhr.status, xhr.statusText);
+            console.error('HTTP Error:', xhr.status, xhr.statusText);
         }
     };
-    xhr.onerror = () => {
-        console.error('Network error');
+
+    xhr.onerror = function () {
+        console.error('Network error occurred');
     };
+
     xhr.send();
 }
 
+// Parses the API response and assigns filters and specialties to each provider
+function parseApiResponse(apiResponse: any, filters: string[], specialties: string[]): DonutProvider[] {
+    const results: any[] = apiResponse.results;
+    return results.map((result: any, index: number) => {
+        const randomFilter = filters[Math.floor(Math.random() * filters.length)];
+        const randomSpecialty = specialties[Math.floor(Math.random() * specialties.length)];
 
-function displayMovies(containerId: string, movies: any[]): void {
-    const moviesContainer: HTMLElement | null = document.getElementById(containerId);
-    if (!moviesContainer) return;
-
-    moviesContainer.innerHTML = '';
-
-    movies.forEach(movie => {
-        const movieCard: HTMLElement = document.createElement('div');
-        movieCard.className = 'movie-card';
-
-        const movieImage: HTMLImageElement = document.createElement('img');
-        movieImage.src = `https://image.tmdb.org/t/p/w500${movie.poster_path || movie.backdrop_path}`;
-        movieImage.alt = movie.title || movie.name;
-        movieImage.onerror = () => console.error("Image failed to load:", movieImage.src);
-
-        const movieTitle: HTMLElement = document.createElement('h3');
-        movieTitle.textContent = movie.title || movie.name;
-
-        const addToFavoritesBtn: HTMLButtonElement = document.createElement('button');
-        addToFavoritesBtn.textContent = 'Add to Favorites';
-        addToFavoritesBtn.onclick = () => addToFavorites(movie);
-
-        movieCard.appendChild(movieImage);
-        movieCard.appendChild(movieTitle);
-        movieCard.appendChild(addToFavoritesBtn);
-
-        moviesContainer.appendChild(movieCard);
+        return {
+            id: index + 1,
+            name: `${result.name.first} ${result.name.last}`,
+            category: randomFilter,
+            specialty: randomSpecialty,
+            location: `${result.location.city}, ${result.location.country}`,
+            priceRange: '$$$',
+            image: result.picture.large,
+        };
     });
 }
 
-function addToFavorites(movie: any): void {
-    let favorites: any[] = JSON.parse(localStorage.getItem('favorites') || '[]');
-    if (!favorites.some(favMovie => favMovie.id === movie.id)) {
-        favorites.push(movie);
-        localStorage.setItem('favorites', JSON.stringify(favorites));
+// Fetches donut filters
+async function fetchDonutFilters(): Promise<string[]> {
+    const filtersFilePath = '../../build/data/donut-filters.json';
+    try {
+        const response = await fetch(filtersFilePath);
+        const data = await response.json();
+        return data.filters;
+    } catch (error) {
+        console.error('Error:', error);
+        return [];
     }
 }
+
+// Fetches donut specialties
+async function fetchDonutSpecialties(): Promise<string[]> {
+    const specialtiesFilePath = '../../build/data/donut-specialties.json';
+    try {
+        const response = await fetch(specialtiesFilePath);
+        const data = await response.json();
+        return data.specialties;
+    } catch (error) {
+        console.error('Error:', error);
+        return [];
+    }
+}
+
+// Displays donut providers on the webpage
+function displayDonutProviders(data: DonutProvider[]) {
+    const productCardsContainer = document.querySelector('.product-cards');
+    if (!productCardsContainer) return;
+
+    productCardsContainer.innerHTML = '';
+
+    data.forEach(provider => {
+        const card = createDonutProviderCard(provider);
+        productCardsContainer.appendChild(card);
+    });
+}
+
+// Creates a card element for a donut provider
+function createDonutProviderCard(provider: DonutProvider): HTMLElement {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+
+    card.innerHTML = `
+        <img src="${provider.image}" alt="${provider.name}" class="provider-image">
+        <h3>${provider.name}</h3>
+        <p>Category: ${provider.category}</p>
+        <p>Specialty: ${provider.specialty}</p>
+        <p>Location: ${provider.location}</p>
+        <p>Price Range: ${provider.priceRange}</p>
+        <button class="add-to-cart-button" data-provider-id="${provider.id}">Add to Cart</button>
+    `;
+
+    // Add event listener for the "Add to Cart" button
+    const addToCartButton = card.querySelector('.add-to-cart-button');
+    if (addToCartButton) {
+        addToCartButton.addEventListener('click', () => {
+            const providerId = addToCartButton.getAttribute('data-provider-id');
+            if (providerId) {
+                addToCart(parseInt(providerId));
+            }
+        });
+    }
+
+    return card;
+}
+
+// Example function to handle adding a provider to the cart
+function addToCart(providerId: number) {
+    // Implement the logic to add the selected provider to the cart
+    console.log(`Adding provider with ID ${providerId} to cart.`);
+    // Here you can implement further logic, like updating a cart state or storing in local storage
+}
+
