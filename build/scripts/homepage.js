@@ -8,12 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-// This function is called when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Fetch data from the custom API endpoint
     fetchDonutProviders();
 });
-// Fetches donut providers using AJAX
 function fetchDonutProviders() {
     const apiUrl = 'https://randomuser.me/api/?results=10';
     const xhr = new XMLHttpRequest();
@@ -43,7 +40,6 @@ function fetchDonutProviders() {
     };
     xhr.send();
 }
-// Parses the API response and assigns filters and specialties to each provider
 function parseApiResponse(apiResponse, filters, specialties) {
     const results = apiResponse.results;
     return results.map((result, index) => {
@@ -60,7 +56,6 @@ function parseApiResponse(apiResponse, filters, specialties) {
         };
     });
 }
-// Fetches donut filters
 function fetchDonutFilters() {
     return __awaiter(this, void 0, void 0, function* () {
         const filtersFilePath = '../../build/data/donut-filters.json';
@@ -75,7 +70,6 @@ function fetchDonutFilters() {
         }
     });
 }
-// Fetches donut specialties
 function fetchDonutSpecialties() {
     return __awaiter(this, void 0, void 0, function* () {
         const specialtiesFilePath = '../../build/data/donut-specialties.json';
@@ -90,7 +84,6 @@ function fetchDonutSpecialties() {
         }
     });
 }
-// Displays donut providers on the webpage
 function displayDonutProviders(data) {
     const productCardsContainer = document.querySelector('.product-cards');
     if (!productCardsContainer)
@@ -101,7 +94,6 @@ function displayDonutProviders(data) {
         productCardsContainer.appendChild(card);
     });
 }
-// Creates a card element for a donut provider
 function createDonutProviderCard(provider) {
     const card = document.createElement('div');
     card.className = 'product-card';
@@ -114,7 +106,6 @@ function createDonutProviderCard(provider) {
         <p>Price Range: ${provider.priceRange}</p>
         <button class="add-to-cart-button" data-provider-id="${provider.id}">Add to Cart</button>
     `;
-    // Add event listener for the "Add to Cart" button
     const addToCartButton = card.querySelector('.add-to-cart-button');
     if (addToCartButton) {
         addToCartButton.addEventListener('click', () => {
@@ -126,9 +117,6 @@ function createDonutProviderCard(provider) {
     }
     return card;
 }
-// Example function to handle adding a provider to the cart
 function addToCart(providerId) {
-    // Implement the logic to add the selected provider to the cart
     console.log(`Adding provider with ID ${providerId} to cart.`);
-    // Here you can implement further logic, like updating a cart state or storing in local storage
 }
