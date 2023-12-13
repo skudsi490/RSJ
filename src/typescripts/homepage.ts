@@ -11,6 +11,20 @@ interface DonutProvider {
 
 let allProviders: DonutProvider[] = [];
 
+document.addEventListener('DOMContentLoaded', () => {
+    displayCurrentUser();
+    fetchDonutProviders();
+    initializeSlider();
+});
+
+function displayCurrentUser() {
+    const currentUserData = localStorage.getItem("currentUserData");
+    if (currentUserData) {
+        const currentUser = JSON.parse(currentUserData);
+        console.log(`Welcome, ${currentUser.fname} ${currentUser.lname}`);
+    }
+}
+
 function initializeSlider() {
     let currentSlideIndex = 0;
     const slides = document.querySelectorAll('.slider-content');
@@ -32,7 +46,7 @@ function initializeSlider() {
 }
 
 function fetchDonutProviders() {
-    const apiUrl = 'https://randomuser.me/api/?results=50';
+    const apiUrl = 'https://randomuser.me/api/?results=100';
     const xhr = new XMLHttpRequest();
     xhr.open('GET', apiUrl, true);
 
@@ -149,10 +163,6 @@ function createDonutProviderCard(provider: DonutProvider): HTMLElement {
 function addToCart(providerId: number) {
     console.log(`Adding provider with ID ${providerId} to cart.`);
 }
-
-fetchDonutProviders();
-initializeSlider();
-
 
 document.getElementById('apply-filters')?.addEventListener('click', () => {
     const selectedCategories = getSelectedFilters('category-filters');

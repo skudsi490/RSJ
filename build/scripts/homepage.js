@@ -1,6 +1,18 @@
 "use strict";
 var _a;
 let allProviders = [];
+document.addEventListener('DOMContentLoaded', () => {
+    displayCurrentUser();
+    fetchDonutProviders();
+    initializeSlider();
+});
+function displayCurrentUser() {
+    const currentUserData = localStorage.getItem("currentUserData");
+    if (currentUserData) {
+        const currentUser = JSON.parse(currentUserData);
+        console.log(`Welcome, ${currentUser.fname} ${currentUser.lname}`);
+    }
+}
 function initializeSlider() {
     let currentSlideIndex = 0;
     const slides = document.querySelectorAll('.slider-content');
@@ -18,7 +30,7 @@ function initializeSlider() {
     setInterval(nextSlide, 3000);
 }
 function fetchDonutProviders() {
-    const apiUrl = 'https://randomuser.me/api/?results=50';
+    const apiUrl = 'https://randomuser.me/api/?results=100';
     const xhr = new XMLHttpRequest();
     xhr.open('GET', apiUrl, true);
     xhr.onload = function () {
@@ -118,8 +130,6 @@ function createDonutProviderCard(provider) {
 function addToCart(providerId) {
     console.log(`Adding provider with ID ${providerId} to cart.`);
 }
-fetchDonutProviders();
-initializeSlider();
 (_a = document.getElementById('apply-filters')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => {
     const selectedCategories = getSelectedFilters('category-filters');
     const selectedSpecialties = getSelectedFilters('specialty-filters');
