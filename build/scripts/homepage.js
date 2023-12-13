@@ -27,7 +27,7 @@ function initializeSlider() {
         let nextSlideIndex = (currentSlideIndex + 1) % totalSlides;
         goToSlide(nextSlideIndex);
     }
-    setInterval(nextSlide, 3000);
+    setInterval(nextSlide, 7000);
 }
 function fetchDonutProviders() {
     const apiUrl = 'https://randomuser.me/api/?results=100';
