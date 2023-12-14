@@ -46,7 +46,7 @@ body {
     background-color: #FFF;
     color: #333;
     border-radius: 5px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     box-sizing: border-box;
     transition: border-color 0.3s ease-in-out; 
 }
@@ -60,7 +60,7 @@ body {
 
 .action-btn {
     width: 100%;
-    padding: 12px;
+    padding: 10px;
     margin: 10px 0;
     background-color: #6A1B9A; 
     color: white;
