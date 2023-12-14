@@ -11,13 +11,18 @@ body {
 }
 
 #logoContainer {
-  margin-bottom: 30px; /* Space between logo and login box */
+  margin-bottom: 30px; 
 }
 
 #logoContainer img {
-  max-width: 200px; /* Larger logo size */
+  max-width: 200px; 
   height: auto;
   margin-bottom: 20px;
+  transition: transform 0.3s ease-in-out; 
+}
+
+#logoContainer:hover {
+  transform: scale(1.05); 
 }
 
 #loginPage {
