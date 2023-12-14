@@ -23,7 +23,7 @@ body {
 #loginPage {
   width: 350px;
   padding: 30px;
-  background-color: #FF7518;
+  background-color: rgb(193, 31, 117);
   border-radius: 10px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   color: #FFF;
@@ -63,7 +63,7 @@ input[type="password"] {
 button#logIn {
   width: 100%;
   padding: 12px;
-  background-color: #6A1B9A;
+  background-color: goldenrod;
   color: white;
   border: none;
   border-radius: 5px;
