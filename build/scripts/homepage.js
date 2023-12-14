@@ -1,4 +1,18 @@
 "use strict";
+var _a;
+let allProviders = [];
+document.addEventListener('DOMContentLoaded', () => {
+    displayCurrentUser();
+    fetchDonutProviders();
+    initializeSlider();
+});
+function displayCurrentUser() {
+    const currentUserData = localStorage.getItem("currentUserData");
+    if (currentUserData) {
+        const currentUser = JSON.parse(currentUserData);
+        console.log(`Welcome, ${currentUser.fname} ${currentUser.lname}`);
+    }
+}
 function initializeSlider() {
     let currentSlideIndex = 0;
     const slides = document.querySelectorAll('.slider-content');
@@ -13,27 +27,21 @@ function initializeSlider() {
         let nextSlideIndex = (currentSlideIndex + 1) % totalSlides;
         goToSlide(nextSlideIndex);
     }
-    setInterval(nextSlide, 3000); // Change slide every 3 seconds
+    setInterval(nextSlide, 7000);
 }
 function fetchDonutProviders() {
-    const apiUrl = 'https://randomuser.me/api/?results=10';
+    const apiUrl = 'https://randomuser.me/api/?results=100';
     const xhr = new XMLHttpRequest();
     xhr.open('GET', apiUrl, true);
     xhr.onload = function () {
         if (xhr.status === 200) {
-            try {
-                const data = JSON.parse(xhr.responseText);
-                Promise.all([fetchDonutFilters(), fetchDonutSpecialties()]).then(values => {
-                    const [filters, specialties] = values;
-                    console.log('Filters:', filters);
-                    console.log('Specialties:', specialties);
-                    const donutProviders = parseApiResponse(data, filters, specialties);
-                    displayDonutProviders(donutProviders);
-                });
-            }
-            catch (error) {
-                console.error('Error parsing data:', error);
-            }
+            const data = JSON.parse(xhr.responseText);
+            Promise.all([fetchDonutFilters(), fetchDonutSpecialties()]).then(values => {
+                const [filters, specialties] = values;
+                displayFilterOptions(filters, specialties); // Populate filter sections
+                allProviders = parseApiResponse(data, filters, specialties);
+                displayDonutProviders(allProviders);
+            });
         }
         else {
             console.error('HTTP Error:', xhr.status, xhr.statusText);
@@ -57,6 +65,7 @@ function parseApiResponse(apiResponse, filters, specialties) {
             location: `${result.location.city}, ${result.location.country}`,
             priceRange: '$$$',
             image: result.picture.large,
+            gender: result.gender
         };
     });
 }
@@ -113,10 +122,7 @@ function createDonutProviderCard(provider) {
     const addToCartButton = card.querySelector('.add-to-cart-button');
     if (addToCartButton) {
         addToCartButton.addEventListener('click', () => {
-            const providerId = addToCartButton.getAttribute('data-provider-id');
-            if (providerId) {
-                addToCart(parseInt(providerId));
-            }
+            addToCart(provider.id);
         });
     }
     return card;
@@ -124,5 +130,71 @@ function createDonutProviderCard(provider) {
 function addToCart(providerId) {
     console.log(`Adding provider with ID ${providerId} to cart.`);
 }
-fetchDonutProviders();
-initializeSlider();
+(_a = document.getElementById('apply-filters')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => {
+    const selectedCategories = getSelectedFilters('category-filters');
+    const selectedSpecialties = getSelectedFilters('specialty-filters');
+    const selectedGenders = getSelectedFilters('gender-filters');
+    applyFilters({
+        categories: selectedCategories,
+        specialties: selectedSpecialties,
+        genders: selectedGenders,
+    });
+});
+function getSelectedFilters(filterContainerId) {
+    const selectedFilters = [];
+    const filterContainer = document.getElementById(filterContainerId);
+    if (filterContainer) {
+        const checkboxes = filterContainer.querySelectorAll('input[type="checkbox"]:checked');
+        checkboxes.forEach(checkbox => {
+            const inputElement = checkbox; // Type casting
+            selectedFilters.push(inputElement.value);
+        });
+    }
+    return selectedFilters;
+}
+function applyFilters(selectedFilters) {
+    const filteredProviders = allProviders.filter(provider => {
+        return ((selectedFilters.categories.length === 0 || selectedFilters.categories.includes(provider.category)) &&
+            (selectedFilters.specialties.length === 0 || selectedFilters.specialties.includes(provider.specialty)) &&
+            (selectedFilters.genders.length === 0 || selectedFilters.genders.includes(provider.gender)));
+    });
+    displayDonutProviders(filteredProviders);
+}
+// New function to extract unique values from the API data
+function extractUniqueValues(dataArray, key) {
+    const uniqueValues = new Set();
+    dataArray.forEach(item => {
+        if (item[key]) {
+            uniqueValues.add(item[key].toString());
+        }
+    });
+    return Array.from(uniqueValues).sort();
+}
+function displayFilterOptions(filters, specialties) {
+    populateFilterSection('category-filters', filters, 'category');
+    populateFilterSection('specialty-filters', specialties, 'specialty');
+    populateFilterSection('gender-filters', ['male', 'female'], 'gender');
+}
+function populateFilterSection(containerId, options, groupName) {
+    const container = document.getElementById(containerId);
+    if (!container) {
+        console.error(`Container not found: ${containerId}`);
+        return;
+    }
+    options.forEach(option => {
+        const checkbox = createCheckbox(option, groupName);
+        container.appendChild(checkbox);
+    });
+}
+function createCheckbox(labelText, groupName) {
+    const container = document.createElement('div');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.value = labelText;
+    checkbox.name = groupName;
+    const label = document.createElement('label');
+    label.textContent = labelText;
+    container.appendChild(checkbox);
+    container.appendChild(label);
+    return container;
+}

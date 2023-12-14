@@ -1,52 +1,100 @@
 {
     "users": [
         {
-            "fname": "Morya",
-            "lname": "Menachem",
+            "fname": "David",
+            "lname": "Levi",
             "id": 1,
             "address": {
-                "city": "Shafir",
+                "city": "Tel Aviv",
                 "country": "Israel"
             },
-            "age": 20,
-            "username": "mm276",
-            "password": "123456"
+            "age": 28,
+            "username": "davidlevi",
+            "password": "david1234"
         },
         {
-            "fname": "Dvir",
-            "lname": "Menachem",
+            "fname": "Sarah",
+            "lname": "Cohen",
             "id": 2,
             "address": {
-                "city": "Shafir",
+                "city": "Jerusalem",
                 "country": "Israel"
             },
-            "age": 17,
-            "username": "dm276",
-            "password": "123456"
+            "age": 24,
+            "username": "sarahcohen",
+            "password": "sarah5678"
         },
         {
-            "fname": "Yahav",
-            "lname": "Menachem",
+            "fname": "Jonathan",
+            "lname": "Goldman",
             "id": 3,
             "address": {
-                "city": "Shafir",
+                "city": "Haifa",
                 "country": "Israel"
             },
-            "age": 12,
-            "username": "my276",
-            "password": "123456"
+            "age": 32,
+            "username": "johngold",
+            "password": "john2023"
         },
         {
-            "fname": "Noya",
-            "lname": "Menachem",
+            "fname": "Rachel",
+            "lname": "Levi",
             "id": 4,
             "address": {
-                "city": "Shafir",
+                "city": "Tel Aviv",
                 "country": "Israel"
             },
-            "age": 9,
-            "username": "nm276",
-            "password": "123456"
+            "age": 29,
+            "username": "rachell",
+            "password": "rachel789"
+        },
+        {
+            "fname": "Michael",
+            "lname": "Cohen",
+            "id": 5,
+            "address": {
+                "city": "Jerusalem",
+                "country": "Israel"
+            },
+            "age": 26,
+            "username": "michaelc",
+            "password": "mike456"
+        },
+        {
+            "fname": "Hannah",
+            "lname": "Goldman",
+            "id": 6,
+            "address": {
+                "city": "Haifa",
+                "country": "Israel"
+            },
+            "age": 30,
+            "username": "hannahg",
+            "password": "hannah2023"
+        },
+        {
+            "fname": "Daniel",
+            "lname": "Levi",
+            "id": 7,
+            "address": {
+                "city": "Tel Aviv",
+                "country": "Israel"
+            },
+            "age": 27,
+            "username": "danlevi",
+            "password": "dan1234"
+        },
+        {
+            "fname": "Rebecca",
+            "lname": "Cohen",
+            "id": 8,
+            "address": {
+                "city": "Jerusalem",
+                "country": "Israel"
+            },
+            "age": 25,
+            "username": "rebeccac",
+            "password": "becca5678"
         },
         {
             "fname": "John",
